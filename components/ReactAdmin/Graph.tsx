@@ -545,35 +545,6 @@ function putEvent(graph, crontabs, routes, history, notify, refresh) {
         }
     });
 
-    // Restores focus on graph container and removes text input from DOM
-    mxEvent.addListener(document, 'keyup', function (evt) {
-        if (evt.code == 'Delete') {
-            graph.getSelectionCells().forEach(function (cell) {
-                crontabs.forEach(function (crontab) {
-                    if (cell.vertex == true && cell.id == crontab.id) {
-                        deleteJob(notify, refresh, crontab.id);
-                        return;
-                    } else if (cell.edge == true && cell.source.id == crontab.id && crontab.trigger) {
-                        crontab.trigger = crontab.trigger.filter(function (id) {
-                            return id != cell.target.id;
-                        });
-                        if (crontab.trigger.length == 0) {
-                            crontab.trigger = '';
-                        }
-                        modifyRelationship(
-                            notify,
-                            refresh,
-                            crontab.id,
-                            cell.target.id,
-                            'DELETE'
-                        );
-                        return;
-                    }
-                });
-            });
-        }
-    });
-
     graph.connectionHandler.addListener(mxEvent.CONNECT, function (sender, evt) {
         const edge = evt.getProperty('cell');
         const source = graph.getModel().getTerminal(edge, true);
