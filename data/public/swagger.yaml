@@ -1,0 +1,351 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Swagger services
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  project:
+    properties:
+      id:
+        type: integer
+      name:
+        type: "string"
+  secret:
+    properties:
+      id:
+        type: integer
+      key:
+        type: "string"
+      value:
+        type: "string"
+  environment:
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      remote:
+        type: "string"
+  job:
+    properties:
+      id:
+        type: integer
+      name:
+        type: "string"
+      project_id:
+        type: integer
+      schedule:
+        type: "string"
+      command:
+        type: "string"
+      environment_id:
+        type: "string"
+      trigger:
+        type: array
+        items:
+          type: integer
+      disabled:
+        type: "boolean"
+      forward_env:
+        type: "boolean"
+  job-filters:
+    - name: KindOfService
+      in: query
+      description: Filters service than provide a search engine
+      required: false
+      type: string
+  environment-filters:
+    - name: KindOfService
+      in: query
+      description: Filters service than provide a search engine
+      required: false
+      type: string
+  project-filters:
+    - name: KindOfService
+      in: query
+      description: Filters service than provide a search engine
+      required: false
+      type: string
+  secret-filters:
+    - name: KindOfService
+      in: query
+      description: Filters service than provide a search engine
+      required: false
+      type: string
+
+parameters:
+  projectId:
+    name: projectId
+    in: path
+    required: true
+    type: string
+  secretId:
+    name: secretId
+    in: path
+    required: true
+    type: string
+  environmentId:
+    name: environmentId
+    in: path
+    required: true
+    type: string
+  jobId:
+    name: jobId
+    in: path
+    required: true
+    type: string
+
+paths:
+  /api/swagger/environments:
+    get:
+      description: Returns all environment
+      parameters:
+        $ref: '#/definitions/environment-filters'
+      responses:
+        default:
+          description: Returns the matching environment
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/environment"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that a environment was last modified
+
+
+  /api/swagger/jobs:
+    get:
+      description: Returns all project
+      parameters:
+        $ref: '#/definitions/job-filters'
+      responses:
+        default:
+          description: Returns the matching project
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/job"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that a job was last modified
+
+
+    post:
+      description: Creates a new job in the store
+      parameters:
+        - name: job
+          in: body
+          description: The job to add to the store
+          required: true
+          schema:
+            $ref: "#/definitions/job"
+      responses:
+        201:
+          description: Returns the newly-added job
+          schema:
+            $ref: "#/definitions/job"
+          headers:
+            Location:
+              type: string
+              description: The URL of the newly-added job
+
+  /api/swagger/jobs/{jobId}:
+    parameters:
+      - $ref: "#/parameters/jobId"
+
+    get:
+      description: Returns a job by name
+      responses:
+        default:
+          description: Returns the job data
+          schema:
+            $ref: "#/definitions/job"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that the job was last modified
+
+    delete:
+      description: Deletes a single job based on the name supplied
+      responses:
+        default:
+          description: Returns the job that was deleted
+          schema:
+            $ref: "#/definitions/job"
+
+    put:
+      description: Updates a job by name
+      parameters:
+        - name: job
+          in: body
+          description: The updated job info
+          required: true
+          schema:
+            $ref: "#/definitions/job"
+      responses:
+        default:
+          description: Returns the updated job data
+          schema:
+            $ref: "#/definitions/job"
+
+
+
+  /api/swagger/projects:
+    get:
+      description: Returns all project
+      parameters:
+        $ref: '#/definitions/project-filters'
+      responses:
+        default:
+          description: Returns the matching project
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/project"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that a project was last modified
+
+
+    post:
+      description: Creates a new project in the store
+      parameters:
+        - name: project
+          in: body
+          description: The project to add to the store
+          required: true
+          schema:
+            $ref: "#/definitions/project"
+      responses:
+        201:
+          description: Returns the newly-added project
+          schema:
+            $ref: "#/definitions/project"
+          headers:
+            Location:
+              type: string
+              description: The URL of the newly-added project
+
+  /api/swagger/projects/{projectId}:
+    parameters:
+      - $ref: "#/parameters/projectId"
+
+    get:
+      description: Returns a project by name
+      responses:
+        default:
+          description: Returns the project data
+          schema:
+            $ref: "#/definitions/project"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that the project was last modified
+
+    delete:
+      description: Deletes a single project based on the name supplied
+      responses:
+        default:
+          description: Returns the project that was deleted
+          schema:
+            $ref: "#/definitions/project"
+
+    put:
+      description: Updates a project by name
+      parameters:
+        - name: project
+          in: body
+          description: The updated project info
+          required: true
+          schema:
+            $ref: "#/definitions/project"
+      responses:
+        default:
+          description: Returns the updated project data
+          schema:
+            $ref: "#/definitions/project"
+
+
+  /api/swagger/secrets:
+    get:
+      description: Returns all secret
+      parameters:
+        $ref: '#/definitions/secret-filters'
+      responses:
+        default:
+          description: Returns the matching secret
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/secret"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that a secret was last modified
+
+
+    post:
+      description: Creates a new secret in the store
+      parameters:
+        - name: secret
+          in: body
+          description: The secret to add to the store
+          required: true
+          schema:
+            $ref: "#/definitions/secret"
+      responses:
+        201:
+          description: Returns the newly-added secret
+          schema:
+            $ref: "#/definitions/secret"
+          headers:
+            Location:
+              type: string
+              description: The URL of the newly-added secret
+
+  /api/swagger/secrets/{secretId}:
+    parameters:
+      - $ref: "#/parameters/secretId"
+
+    get:
+      description: Returns a secret by name
+      responses:
+        default:
+          description: Returns the secret data
+          schema:
+            $ref: "#/definitions/secret"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that the secret was last modified
+
+    delete:
+      description: Deletes a single secret based on the name supplied
+      responses:
+        default:
+          description: Returns the secret that was deleted
+          schema:
+            $ref: "#/definitions/secret"
+
+    put:
+      description: Updates a secret by name
+      parameters:
+        - name: secret
+          in: body
+          description: The updated secret info
+          required: true
+          schema:
+            $ref: "#/definitions/secret"
+      responses:
+        default:
+          description: Returns the updated secret data
+          schema:
+            $ref: "#/definitions/secret"

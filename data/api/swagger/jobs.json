@@ -1,0 +1,35 @@
+[
+  {
+    "collection": "/api/swagger/jobs",
+    "name": "/6472012263156222",
+    "modifiedOn": "2021-06-26T12:00:43.598Z",
+    "data": {
+      "name": "1/Create ssh key",
+      "command": "genghiskhan/create_ssh_key.sh",
+      "id": 6472012263156222
+    },
+    "createdOn": "2021-06-26T12:00:43.598Z"
+  },
+  {
+    "collection": "/api/swagger/jobs",
+    "name": "/8564483330219138",
+    "modifiedOn": "2021-06-26T12:09:27.822Z",
+    "data": {
+      "name": "2/Checkup",
+      "id": 8564483330219138,
+      "command": "genghiskhan/checkup.sh"
+    },
+    "createdOn": "2021-06-26T12:09:27.822Z"
+  },
+  {
+    "collection": "/api/swagger/jobs",
+    "name": "/8402000650474524",
+    "modifiedOn": "2021-06-26T12:01:06.056Z",
+    "data": {
+      "name": "3/git init",
+      "command": "genghiskhan/git_init.sh",
+      "id": 8402000650474524
+    },
+    "createdOn": "2021-06-26T12:01:06.056Z"
+  }
+]

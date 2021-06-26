@@ -1,0 +1,35 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "plugin:react-prefer-function-component/recommended"
+    ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "react/jsx-indent":"warn",
+        "react/react-in-jsx-scope": "off",
+        "react/prefer-stateless-function": [1],
+        "prettier/prettier": "error",
+        "@typescript-eslint/no-this-alias": [
+            "error",
+            {
+                "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
+                "allowedNames": ["that"] // Allow `const that = this`; `[]` by default
+            }
+        ]
+    },
+    "plugins": [
+        "prettier",
+        "react-prefer-function-component"
+    ],
+    "globals": {
+        "React": "writable"
+    }
+}
