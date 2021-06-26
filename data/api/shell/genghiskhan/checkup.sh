@@ -15,5 +15,4 @@ fi
 
 cd /tmp
 git clone -b $GIT_BRANCH $GIT_REPO
-
-echo "OK"
+exit $?

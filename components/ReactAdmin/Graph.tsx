@@ -144,7 +144,7 @@ function loadGraphFromCrontabs(
         graph.setConnectable(true);
         putStyle(graph);
         putEvent(graph, crontabs, routes, history, notify, refresh);
-        putControls(graph, crontabs, routes, notify);
+        putControls(graph, crontabs, routes, notify, refresh);
 
         // Enables rubberband selection
         new mxRubberband(graph);
@@ -314,7 +314,7 @@ function getPoolName(crontab, environments) {
     return 'local';
 }
 
-function putControls(graph, crontabs, routes, notify) {
+function putControls(graph, crontabs, routes, notify, refresh) {
     // Specifies the URL and size of the new control
     const controls = {
         startControl: {
@@ -339,7 +339,7 @@ function putControls(graph, crontabs, routes, notify) {
             behavior: function (graph, state) {
                 return function (evt) {
                     if (graph.isEnabled()) {
-                        runJob(notify, state.cell.id);
+                        runJob(notify, refresh, state.cell.id);
                         graph.selectCellForEvent(state.cell, evt);
                         mxEvent.consume(evt);
                     }
@@ -592,7 +592,7 @@ function putEvent(graph, crontabs, routes, history, notify, refresh) {
     });
 }
 
-function runJob(notify, id) {
+function runJob(notify, refresh, id) {
     fetch(window.location.protocol + `/api/execute/${id}`)
         .then(async (response) => {
             if (!response.ok) {
@@ -600,8 +600,10 @@ function runJob(notify, id) {
             } else {
                 notify('Job run', 'info', {}, true);
             }
+            refresh();
         })
         .catch((error) => notify(`Error: ${error.message}`, 'warning'));
+    refresh();
 }
 
 function modifyRelationship(notify, refresh, a, b, method) {
