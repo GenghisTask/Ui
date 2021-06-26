@@ -9,6 +9,7 @@ RUN apt update && apt install -y \
       procps
 RUN ln -s $(which node) /usr/bin/node && ln -s $(which npm) /usr/bin/npm
 RUN curl -sSL https://get.docker.com/ -o get-docker.sh && sh get-docker.sh || apt update && apt install -y docker-ce-cli
+RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 ENV CRON_PATH /etc/crontabs
 
