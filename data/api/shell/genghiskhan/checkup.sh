@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ -z "$GIT_REPO" ]
 then
       echo "make sure environment variable \$GIT_REPO si defined"

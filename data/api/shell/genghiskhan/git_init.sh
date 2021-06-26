@@ -1,3 +1,4 @@
+#!/bin/bash
 rm -rf /app/data/api
 mkdir -p /app/data/api
 cd /app/data/api
