@@ -1,40 +1,29 @@
-import { TopToolbar, CreateButton, SaveButton, Link, Button, useNotify, useRedirect, useRefresh } from 'react-admin';
-import { useCallback , useState } from 'react';
+import { TopToolbar, CreateButton, Button } from 'react-admin';
 import { useSwaggerApi } from './useSwaggerApi';
+import handleClickGenerator, {
+    useCrontabActionLoadingState
+} from './CrontabAction/handleClickGenerator';
 
-const CrontabAction = (props) => {
+const CrontabAction = (props: { basePath: string; resource: string }) => {
     const { basePath, resource } = props;
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const refresh = useRefresh();
     const api = useSwaggerApi();
-    const [loading, setLoading] = useState(false);
-    const handleClickGenerator = (action) =>
-        useCallback(() => {
-            setLoading(true);
-            fetch(window.location.protocol + 'api/swagger/crons/' + action, { method: 'POST' })
-                .then(async (response) => {
-                    if (!response.ok) {
-                        throw new Error(await response.text());
-                    }
-                    redirect('/jobs');
-                    refresh();
-                    notify('Success', 'info', {}, true);
-                })
-                .catch((error) => notify(`Error: ${error.message}`, 'warning'))
-                .finally(() => setLoading(false));
-        }, []);
-    const handleSave = handleClickGenerator('save');
-    const handleBackup = handleClickGenerator('backup');
-    const handleRestore = handleClickGenerator('restore');
-
+    const loading = useCrontabActionLoadingState((state) => state.loading);
+    const saveAction = handleClickGenerator('save');
     const isListing = window.location.toString().match(/s$/);
     return (
         <TopToolbar>
-            {isListing && api.paths['/api/swagger/' + resource.toLowerCase()] && api.paths['/api/swagger/' + resource.toLowerCase()].post && <CreateButton basePath={basePath} />}
-            {isListing && resource == "jobs"  && <Button label="Save to crontab" onClick={handleSave} disabled={loading} />}
-            {isListing && <Button label="Backup" onClick={handleBackup} disabled={loading} />}
-            {isListing && <Button label="Restore" onClick={handleRestore} disabled={loading} />}
+            {isListing &&
+                api.paths['/api/swagger/' + resource.toLowerCase()] &&
+                api.paths['/api/swagger/' + resource.toLowerCase()].post && (
+                    <CreateButton basePath={basePath} />
+                )}
+            {isListing && resource == 'jobs' && (
+                <Button
+                    label="Save to crontab"
+                    onClick={saveAction}
+                    disabled={loading}
+                />
+            )}
         </TopToolbar>
     );
 };

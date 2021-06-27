@@ -58,7 +58,7 @@ const ViewGuesser = (parentProps) => {
 
         setInferredChild(inferredChildObject.getElement());
     }, [api, record]);
-    return <View children={inferredChild} {...props}  actions={<CrontabAction />} />;
+    return <View children={inferredChild} {...props} actions={<CrontabAction {...props}/>} />;
 };
 
 ViewGuesser.propTypes = CreateView.propTypes;

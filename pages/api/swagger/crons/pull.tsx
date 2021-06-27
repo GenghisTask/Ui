@@ -15,7 +15,7 @@ export default async function handler(
     }
     try {
         if (process.env.GIT_REPO) {
-            git.pull(process.env.GIT_REPO, process.env.GIT_BRANCH);
+            await git.pull(process.env.GIT_REPO, process.env.GIT_BRANCH);
         }
     } catch (e) {
         res.status(500);

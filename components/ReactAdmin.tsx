@@ -9,6 +9,7 @@ import {
 } from 'react-admin';
 import { ReactNode } from 'react';
 import myDataProvider from './ReactAdmin/MyDataProvider';
+import MyLayout from './ReactAdmin/MyLayout';
 import FormGuesser from './ReactAdmin/FormGuesser';
 import { ApiContext, useSwaggerApi } from './ReactAdmin/useSwaggerApi';
 import editFieldTypes from 'ra-ui-materialui/lib/detail/editFieldTypes';
@@ -34,7 +35,7 @@ const ReactAdmin = (): ReactNode => {
     return (
         <ApiContext>
             {(api) => (
-                <Admin dataProvider={myDataProvider}>
+                <Admin dataProvider={myDataProvider} layout={MyLayout}>
                     <Resource
                         name="Graphs"
                         list={(props) => <Graph {...props} resource="jobs" filters={<JobFilter />} />}

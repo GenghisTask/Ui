@@ -71,7 +71,7 @@ const ListGraph = (props: Omit<ListViewProps, 'children'>) => {
         <ListView
             {...props}
             pagination={false}
-            actions={<CrontabAction basePath="jobs" />}
+            actions={<CrontabAction {...props} basePath="jobs" />}
         >
             <MxGraph
                 logs={logs}

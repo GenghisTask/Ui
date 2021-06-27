@@ -15,9 +15,9 @@ export default async function handler(
     }
     try {
         if (process.env.GIT_REPO) {
-            git.add('.');
-            git.commit(' "Automated Gengiskhan commit"');
-            git.push(process.env.GIT_REPO, process.env.GIT_BRANCH);
+            await git.add('.');
+            await git.commit('Automated GenghisTask commit');
+            await git.push(process.env.GIT_REPO, process.env.GIT_BRANCH);
         }
     } catch (e) {
         res.status(500);

@@ -44,7 +44,8 @@
     "x-ray": "^2.3.4",
     "xml-beautifier": "^0.4.3",
     "xmldom": "^0.6.0",
-    "yaml": "^1.10.2"
+    "yaml": "^1.10.2",
+    "zustand": "^3.5.4"
   },
   "husky": {
     "hooks": {

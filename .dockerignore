@@ -26,3 +26,6 @@ yarn-error.log*
 !/data/public/swagger.yaml
 !/data/api/shell
 !/data/api/swagger
+
+.git
+.next
