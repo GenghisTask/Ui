@@ -27,6 +27,10 @@ class Job extends EventEmitter {
     }
 
     execute(env) {
+        if (this.data.disabled) {
+            this.emit('finished', 0);
+            return;
+        }
         const id = UUID(0).uuid();
         const logDir = 'data/public/log/';
 
