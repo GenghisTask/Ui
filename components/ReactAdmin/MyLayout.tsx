@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Layout, AppBar, Button } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router';
 import handleClickGenerator, {
     useCrontabActionLoadingState
 } from './CrontabAction/handleClickGenerator';
@@ -9,6 +10,7 @@ import { Tooltip, IconButton } from '@material-ui/core';
 const MyUserMenu = (props) => {
     const isListing = window.location.toString().match(/s$/);
     const loading = useCrontabActionLoadingState((state) => state.loading);
+    const router = useRouter();
     const checkoutAction = handleClickGenerator('checkout');
     const pushAction = handleClickGenerator('push');
     const pullAction = handleClickGenerator('pull');
@@ -44,6 +46,17 @@ const MyUserMenu = (props) => {
                         disabled={loading}
                     >
                         <small>Pull</small>
+                    </IconButton>
+                </Tooltip>
+            )}
+            {isListing && (
+                <Tooltip title={'Edit the git repository'} enterDelay={500}>
+                    <IconButton
+                        color="inherit"
+                        onClick={() => router.push('api/script/edit')}
+                        disabled={loading}
+                    >
+                        <small>Git</small>
                     </IconButton>
                 </Tooltip>
             )}

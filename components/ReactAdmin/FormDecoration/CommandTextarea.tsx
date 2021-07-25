@@ -73,7 +73,9 @@ export default {
                                 width: '20%'
                             }}
                         >
+                        <a href={`api/script/edit?file=${lastRequest}`} style={{ textDecoration: 'none', color: 'black' }} >
                             <pre>{preview}</pre>
+                        </a>
                         </div>
                         <div style={{ clear: 'both' }} />
                         <TextInput source="command" type="hidden" />
