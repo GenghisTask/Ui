@@ -50,6 +50,7 @@ class Job extends EventEmitter {
             });
             this.close(tempName, output, output2);
             this.launchTrigger(env, 0);
+            this.emit('finished', 0);
             return;
         }
         if (!fs.existsSync('data/api/shell/' + this.data.command)) {

@@ -35,6 +35,35 @@ class JobFactory {
         return Object.assign(new Job(), job);
     }
 
+    static async checkAcl(req): Promise<Resource> {
+        if (!req.query.id) {
+            throw `Unable to find job id`;
+        }
+        if (!req.query.hash) {
+            throw `Unable to find hash`;
+        }
+        const jobId = req.query.id[0];
+        const hash = req.query.hash;
+        const get = util.promisify(myDB.get).bind(myDB);
+        const job = await get(`/api/swagger/jobs/${jobId}`);
+        const token = await get(`/api/swagger/tokens/${hash}`);
+        if (!job) {
+            throw `Unable to find ${jobId}`;
+        }
+        if (!token) {
+            throw `Unable to find ${hash}`;
+        }
+        if (!Array.isArray(token.data.allowed_projects)) {
+            throw `Token has no allowed projects`;
+        }
+        if (!job.data.project_id) {
+            throw `Job is not in a project`;
+        }
+        if (!token.data.allowed_projects.includes(job.data.project_id)) {
+            throw `Job is not in a project allowed by this token`;
+        }
+    }
+
     static async save(job): Promise<Resource> {
         const remove = util.promisify(myDB.delete).bind(myDB);
         const save = util.promisify(myDB.save).bind(myDB);

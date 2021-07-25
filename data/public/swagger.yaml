@@ -31,6 +31,16 @@ definitions:
         type: "string"
       remote:
         type: "string"
+  token:
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      allowed_projects:
+        type: array
+        items:
+          type: integer
   job:
     properties:
       id:
@@ -65,6 +75,12 @@ definitions:
       description: Filters service than provide a search engine
       required: false
       type: string
+  token-filters:
+    - name: KindOfService
+      in: query
+      description: Filters service than provide a search engine
+      required: false
+      type: string
   project-filters:
     - name: KindOfService
       in: query
@@ -79,6 +95,11 @@ definitions:
       type: string
 
 parameters:
+  tokenId:
+    name: tokenId
+    in: path
+    required: true
+    type: string
   projectId:
     name: projectId
     in: path
@@ -349,3 +370,79 @@ paths:
           description: Returns the updated secret data
           schema:
             $ref: "#/definitions/secret"
+
+  /api/swagger/tokens:
+    get:
+      description: Returns all token
+      parameters:
+        $ref: '#/definitions/token-filters'
+      responses:
+        default:
+          description: Returns the matching token
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/token"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that a token was last modified
+
+
+    post:
+      description: Creates a new token in the store
+      parameters:
+        - name: token
+          in: body
+          description: The token to add to the store
+          required: true
+          schema:
+            $ref: "#/definitions/token"
+      responses:
+        201:
+          description: Returns the newly-added token
+          schema:
+            $ref: "#/definitions/token"
+          headers:
+            Location:
+              type: string
+              description: The URL of the newly-added token
+
+  /api/swagger/tokens/{tokenId}:
+    parameters:
+      - $ref: "#/parameters/tokenId"
+
+    get:
+      description: Returns a token by name
+      responses:
+        default:
+          description: Returns the token data
+          schema:
+            $ref: "#/definitions/token"
+          headers:
+            last-modified:
+              type: string
+              description: The date/time that the token was last modified
+
+    delete:
+      description: Deletes a single token based on the name supplied
+      responses:
+        default:
+          description: Returns the token that was deleted
+          schema:
+            $ref: "#/definitions/token"
+
+    put:
+      description: Updates a token by name
+      parameters:
+        - name: token
+          in: body
+          description: The updated token info
+          required: true
+          schema:
+            $ref: "#/definitions/token"
+      responses:
+        default:
+          description: Returns the updated token data
+          schema:
+            $ref: "#/definitions/token"
