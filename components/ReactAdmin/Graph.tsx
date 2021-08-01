@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import inflection from 'inflection';
 import { useNotify, useRefresh } from 'react-admin';
-
 import {
     useListController,
     getElementsFromRecords,
@@ -11,7 +10,7 @@ import {
     useResourceContext
 } from 'ra-core';
 import { useHistory } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, useListContext } from 'ra-core';
 import ListView, { ListViewProps } from 'ra-ui-materialui/lib/list/ListView';
 import listFieldTypes from 'ra-ui-materialui/lib/list/listFieldTypes';
 import { ListProps } from 'ra-ui-materialui/lib/types';
@@ -50,12 +49,27 @@ const Graph = (props: ListProps) => {
 const ListGraph = (props: Omit<ListViewProps, 'children'>) => {
     const { data } = props;
     const [environments, setEnvironments] = useState(null);
+    const [projects, setProject] = useState(null);
     const [logs, setLogs] = useState(null);
+    const { filterValues } = useListContext(props);
     useEffect(() => {
         fetch(window.location.protocol + 'api/swagger/environments')
             .then((response) => response.json())
             .then((json) => setEnvironments(json));
-    }, []);
+        fetch(window.location.protocol + 'api/swagger/projects')
+            .then((response) => response.json())
+            .then((json) => {
+                setProject(
+                    json
+                        .concat([{ id: null, name: 'Unassigned' }])
+                        .filter(
+                            (p) =>
+                                !filterValues.project_id ||
+                                filterValues.project_id == p.id
+                        )
+                );
+            });
+    }, [filterValues]);
     useEffect(() => {
         if (Object.keys(data).length) {
             fetch(
@@ -73,11 +87,21 @@ const ListGraph = (props: Omit<ListViewProps, 'children'>) => {
             pagination={false}
             actions={<CrontabAction {...props} basePath="jobs" />}
         >
-            <MxGraph
-                logs={logs}
-                environments={environments}
-                crontabs={Object.values(data)}
-            />
+            <>
+                {projects &&
+                    projects.map((project) => (
+                        <>
+                            <h2>{project.name}</h2>
+                            <MxGraph
+                                logs={logs}
+                                environments={environments}
+                                crontabs={Object.values(data).filter(
+                                    (c) => c.project_id == project.id
+                                )}
+                            />
+                        </>
+                    ))}
+            </>
         </ListView>
     );
 };
@@ -118,7 +142,7 @@ const MxGraph = ({ logs, crontabs, environments }) => {
         },
         [crontabs, environments, logs]
     );
-    return <div className="container" id="root-graph" ref={addDivGraphRef}></div>;
+    return <div className="container" ref={addDivGraphRef}>This project is empty</div>;
 };
 
 function loadGraphFromCrontabs(
