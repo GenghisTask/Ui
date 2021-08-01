@@ -2,6 +2,11 @@ import { InferredElement, InputProps } from 'ra-core';
 import inflection from 'inflection';
 import { SelectInput, TextInput } from 'react-admin';
 import { ReactNode, useState, useEffect } from 'react';
+
+import { IconButton } from '@material-ui/core';
+import handleClickGenerator, {
+    useCrontabActionLoadingState
+} from '../CrontabAction/handleClickGenerator';
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 import { useForm, useFormState } from 'react-final-form';
@@ -15,6 +20,7 @@ export default {
         new InferredElement({
             component: (props: { children: ReactNode } & InputProps) => {
                 const form = useForm();
+                const pull = handleClickGenerator('pull');
                 const { values } = useFormState({ subscription: { values: true } });
                 const [preview, setPreview] = useState('');
                 const [lastRequest, setLastRequest] = useState(null);
@@ -73,6 +79,7 @@ export default {
                                 width: '20%'
                             }}
                         >
+                        Select an executable file or <a href={`api/script/edit?file=${lastRequest}`}>click here</a> {lastRequest ? "to edit" : "create a new one"}
                         <a href={`api/script/edit?file=${lastRequest}`} style={{ textDecoration: 'none', color: 'black' }} >
                             <pre>{preview}</pre>
                         </a>

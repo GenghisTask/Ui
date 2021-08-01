@@ -15,6 +15,8 @@ export default async function handler(
     let append = '';
     if (req.query.file) {
         append = `/edit/${process.env.GIT_BRANCH}/shell/${req.query.file}`;
+    } else if (req.query.file === '') {
+        append = `/new/${process.env.GIT_BRANCH}/shell`;
     }
     res.redirect(repository + append);
     return;
