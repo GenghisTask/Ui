@@ -34,7 +34,6 @@ class Job extends EventEmitter {
         const id = UUID(0).uuid();
         const logDir = 'data/public/log/';
 
-        Object.assign(env, this.secret);
         if (!fs.existsSync(logDir)) {
             fs.mkdirSync(logDir);
         }
@@ -62,23 +61,34 @@ class Job extends EventEmitter {
             this.close(tempName, output, output2);
             return;
         }
+        if (this.data.arguments) {
+            const replaceSecret = (text) => {
+                Object.entries(this.secret).map(
+                    ([k, v]) => (text = text.replace('$' + k, v))
+                );
+                return text;
+            };
+            Object.assign(
+                env,
+                Object.fromEntries(
+                    this.data.arguments.map(replaceSecret).map((text) => text.split('='))
+                )
+            );
+        }
 
         let stdin = null;
         const scriptContent = fs.readFileSync('data/api/shell/' + this.data.command);
         childProcess.execSync(`export -p | cut -d ' ' -f 2- > data/env`, { env: env });
         if (this.data.forward_env) {
             childProcess.execSync('export -p > ' + tempName + '.sh\n', { env: env });
-            fs.appendFileSync(
-                tempName + '.sh',
-                scriptContent
-            );
+            fs.appendFileSync(tempName + '.sh', scriptContent);
             stdin = fs.openSync(tempName + '.sh', 'r');
         } else {
             stdin = fs.openSync('data/api/shell/' + this.data.command, 'r');
         }
 
-        this.environment.remote +=
-            ((new String(scriptContent).match(/(^#!.*)/) || [])[1] || ''
+        this.environment.remote += (
+            (new String(scriptContent).match(/(^#!.*)/) || [])[1] || ''
         ).replace('#!', ' ');
 
         const execution = childProcess.spawn('sh', ['-c', this.environment.remote], {
@@ -120,8 +130,8 @@ class Job extends EventEmitter {
             if (!fs.existsSync(fileName)) {
                 return resolve(defaultLine);
             }
-            let inStream = fs.createReadStream(fileName);
-            let rl = readline.createInterface(inStream);
+            const inStream = fs.createReadStream(fileName);
+            const rl = readline.createInterface(inStream);
             let lastLine = defaultLine;
             rl.on('line', function (line) {
                 if (line.length >= minLength) {

@@ -60,7 +60,6 @@ export const useMiddleware = (
 ): Promise<void> => {
     return async.series(
         swaggerMiddlewares.map((middleware) => (resolve: () => void) => {
-            console.log(middleware.name)
             if (['jsonParser', 'mockResponseBody'].indexOf(middleware.name) != -1) {
                 const oldmiddleware = middleware;
                 middleware = function (req, res, next) {

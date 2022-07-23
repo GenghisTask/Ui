@@ -53,6 +53,10 @@ definitions:
         type: "string"
       command:
         type: "string"
+      arguments:
+        type: array
+        items:
+          type: "string"
       environment_id:
         type: "string"
       trigger:
