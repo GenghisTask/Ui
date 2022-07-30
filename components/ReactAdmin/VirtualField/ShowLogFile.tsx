@@ -16,6 +16,7 @@ export default {
         new InferredElement({
             component: (props: { children: ReactNode } & InputProps) => {
                 const [recordId, setRecordId] = useState(null);
+                const [purged, setPurged] = useState(false);
                 useEffect(()=>{
                     if (record) {
                         setRecordId(record.id);
@@ -32,6 +33,17 @@ export default {
                             onClick={()=> window.open(`/api/static/log/${recordId}.stderr.log`)}
                         >
                             stderr
+                        </Button>
+                        <Button
+                            onClick={()=> window.open(`#logs/${recordId}`)}
+                        >
+                            log
+                        </Button>
+                        <Button
+                            onClick={()=> {fetch(`${window.location.protocol}/api/purge/log/${recordId}`); setPurged(true); }}
+                            disabled={purged}
+                        >
+                            purge
                         </Button>
                     </>
                 );

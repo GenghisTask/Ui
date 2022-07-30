@@ -16,6 +16,7 @@ import editFieldTypes from 'ra-ui-materialui/lib/detail/editFieldTypes';
 import listFieldTypes from 'ra-ui-materialui/lib/list/listFieldTypes';
 import Graph from './ReactAdmin/Graph';
 import JobFilter from './ReactAdmin/JobFilter';
+import ShowLogs from './ReactAdmin/ShowLogs'
 import {
     CreateContextProvider,
     useCreateController,
@@ -41,7 +42,7 @@ const ReactAdmin = (): ReactNode => {
                         list={(props) => <Graph {...props} resource="jobs" filters={<JobFilter />} />}
                     />
                     <Resource intent="route" name="crons" />
-                    <Resource intent="route" name="logs" />
+                    <Resource intent="route" name="logs" list={ShowLogs}/>
                     {api.resources.map((value, i) => (
                         <Resource
                             key={i}

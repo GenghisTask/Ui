@@ -31,3 +31,7 @@ footer a {
 footer img {
     height: 1em;
 }
+
+.MuiDrawer-root a[href^='#/log'] {
+    display: none;
+}
