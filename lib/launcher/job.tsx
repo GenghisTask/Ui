@@ -34,6 +34,7 @@ class Job extends EventEmitter {
         const id = UUID(0).uuid();
         const logDir = 'data/public/log/';
 
+        Object.assign(env, this.secret);
         if (!fs.existsSync(logDir)) {
             fs.mkdirSync(logDir);
         }
