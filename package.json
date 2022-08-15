@@ -29,7 +29,6 @@
     "node-firebird": "^0.9.9",
     "nodemw": "^0.14.0",
     "opensearch-browser": "^2.0.0-alpha.6",
-    "oracledb": "^5.4.0",
     "pg": "^8.7.3",
     "ra-data-simple-rest": "^3.13.4",
     "react": "17.0.2",
