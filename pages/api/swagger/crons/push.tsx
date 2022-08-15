@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import simpleGit, { SimpleGit } from 'simple-git';
+import myDB, {DatabaseIsFile, FileDatabase} from '../../../../lib/database';
 /**
  * Serve given file (from cache dir only)
  */
@@ -10,6 +11,13 @@ export default async function handler(
     const git: SimpleGit = simpleGit({ baseDir: 'data/api/' });
     try {
         await git.init();
+    } catch (e) {
+        console.log(e);
+    }
+    try {
+        if (!DatabaseIsFile) {
+            myDB.export(myDB, FileDatabase);
+        }
     } catch (e) {
         console.log(e);
     }

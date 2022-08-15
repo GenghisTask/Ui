@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import simpleGit, { SimpleGit } from 'simple-git';
+import myDB, {DatabaseIsFile, FileDatabase} from '../../../../lib/database';
 /**
  * Serve given file (from cache dir only)
  */
@@ -16,6 +17,15 @@ export default async function handler(
     try {
         if (process.env.GIT_REPO) {
             await git.pull(process.env.GIT_REPO, process.env.GIT_BRANCH);
+        }
+    } catch (e) {
+        res.status(500);
+        return res.send(e.message);
+    }
+
+    try {
+        if (!DatabaseIsFile) {
+            myDB.export(FileDatabase, myDB);
         }
     } catch (e) {
         res.status(500);

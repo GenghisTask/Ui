@@ -34,7 +34,7 @@ definitions:
   token:
     properties:
       id:
-        type: "string"
+        type: "integer"
       name:
         type: "string"
       allowed_projects:

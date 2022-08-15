@@ -1,9 +1,8 @@
-import { FileDataStore, Resource } from '@apidevtools/swagger-express-middleware';
+import { Resource } from '@apidevtools/swagger-express-middleware';
 import util from 'util';
 import Job from './job';
 import Environment from './environment';
-
-const myDB = new FileDataStore(process.cwd() + '/data');
+import myDB from '../database';
 
 class JobFactory {
     static async load(id): Promise<Resource> {

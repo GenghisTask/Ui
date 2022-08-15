@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import JobFactory from '../../../../lib/launcher/job-factory';
-import { FileDataStore } from '@apidevtools/swagger-express-middleware';
 import util from 'util';
 import contentRange from '../../../../lib/middleware/content-range';
 import childProcess from 'child_process';
-const myDB = new FileDataStore(process.cwd() + '/data');
+import myDB from '../../../../lib/database';
 /**
  * Serve given file (from cache dir only)
  */

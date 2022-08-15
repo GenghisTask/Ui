@@ -1,12 +1,11 @@
 import createMiddleware from '@apidevtools/swagger-express-middleware';
 import path from 'path';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { FileDataStore } from '@apidevtools/swagger-express-middleware';
 import contentRange from '../../../lib/middleware/content-range';
 import expressMock, { useMiddleware } from '../../../lib/middleware/express-mock';
 import filterMock from '../../../lib/middleware/filter-mock';
 import upload from '../../../lib/middleware/upload';
-const myDB = new FileDataStore(process.cwd() + '/data');
+import myDB from '../../../lib/database';
 
 /**
  * Swagger 2.0 generic middlware for NextJs
