@@ -537,15 +537,15 @@ function putStyle(graph) {
     graph.getStylesheet().putCellStyle(mxConstants.SHAPE_SWIMLANE, style);
 
     var style = [];
-    style[mxConstants.STYLE_FILLCOLOR] = '#ED4337';
+    style[mxConstants.STYLE_FILLCOLOR] = 'tomato';
     graph.getStylesheet().putCellStyle('returncode', style);
 
     const styleRunning = [];
-    styleRunning[mxConstants.STYLE_FILLCOLOR] = '#90ee90';
+    styleRunning[mxConstants.STYLE_FILLCOLOR] = 'lightgreen';
     graph.getStylesheet().putCellStyle('running', styleRunning);
 
     const styleDisabled = [];
-    styleDisabled[mxConstants.STYLE_FILLCOLOR] = '#d3d3d3';
+    styleDisabled[mxConstants.STYLE_FILLCOLOR] = 'lightgray';
     graph.getStylesheet().putCellStyle('disabled', styleDisabled);
 
     style = graph.getStylesheet().getDefaultEdgeStyle();
@@ -555,7 +555,7 @@ function putStyle(graph) {
 
 function putEvent(graph, crontabs, routes, history, notify, refresh) {
     const style = document.createElement('style');
-    style.innerHTML = '.graph-selected {' + '    background-color: #00ff00 !important;';
+    style.innerHTML = '.graph-selected {' + '    background-color: lawngreen !important;';
     ('}');
     document.body.appendChild(style);
 
